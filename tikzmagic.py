@@ -290,6 +290,16 @@ class TikzMagics(Magics):
   Speaker/.pic={
     \\filldraw[fill=gray!40,pic actions] (-15pt,0) -- (15pt,0) -- ++([shift={(-6pt,8pt)}]0pt,0pt) coordinate (aux1) -- ++(-18pt,0) coordinate (aux2) -- cycle (aux1) -- ++(0,6pt) -- ++(-18pt,0) -- (aux2);
   },
+  coordSpeaker/.pic={
+    \\filldraw[fill=gray!40,pic actions] 
+    (-15pt,0) -- 
+      coordinate[midway] (-front) 
+    (15pt,0) -- 
+    ++([shift={(-6pt,8pt)}]0pt,0pt) coordinate (aux1) -- 
+    ++(-18pt,0) coordinate (aux2) 
+    -- cycle 
+    (aux1) -- ++(0,6pt) -- coordinate[midway] (-back) ++(-18pt,0) -- (aux2);
+  },  
   Human/.pic={
     \\filldraw[fill=skin] 
       (0,0.7cm) ellipse [x radius=5pt,y radius=3pt]

@@ -270,11 +270,13 @@ class TikzMagics(Magics):
         tex = []
         tex.append('''
 \\documentclass[convert={%(add_params)ssize=%(width)sx%(height)s,outext=.png},border=0pt]{standalone}
-\\usepackage{tikz,amsmath,pgfplots}
+\\usepackage{tikz,amsmath,pgfplots,ifthen}
 \\definecolor{lightgrey}{RGB}{192,192,192}
 \\definecolor{gaygrey}{RGB}{5,5,5}
 \\definecolor{skin}{RGB}{248,198,135}
 \\definecolor{mygreen}{RGB}{66,213,0}
+\\definecolor{blue_kuleuven}{RGB}{17,110,138}
+\\definecolor{pbgray}{HTML}{575757}
         ''' % locals())
         
 #       if tikz_library is not None:
@@ -316,6 +318,33 @@ class TikzMagics(Magics):
   },
   >=latex
 }
+
+\\newcommand{\\progressbar}[3]{
+    \\begin{tikzpicture}[rounded corners=2pt,very thin,scale=1]
+
+        \\shade[top color=pbgray!20,bottom color=pbgray!20,middle color=pbgray!50]
+          (0pt, 0pt) rectangle ++ (#1, #2);
+
+        \\shade[draw=blue_kuleuven,top color=blue_kuleuven!60,bottom color=blue_kuleuven!60,middle color=blue_kuleuven]
+            (0pt, 0pt) rectangle ++ (#1/100*#3pt, #2);
+
+        \\ifthenelse{#3 < 50}{
+           \\def\\pbcol{blue_kuleuven}
+        }{
+           \\def\\pbcol{white}
+        }
+
+        \\draw[color=blue_kuleuven!50]
+          (0pt, 0pt) rectangle (#1, #2)
+            node[pos=0.5,white] {\\scriptsize{
+                \\textbf{\\color{\\pbcol}{#3\\,\\%%}}
+            }
+        };
+    \\end{tikzpicture}
+}
+
+
+
     '''% locals())
 
 
