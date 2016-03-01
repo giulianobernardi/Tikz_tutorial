@@ -283,7 +283,8 @@ class TikzMagics(Magics):
 #            for lib in tikz_library:
 # place custom libraries here
         tex.append('''
-\\usetikzlibrary{calc,shapes.geometric,arrows,dsp,patterns,positioning}
+\\usetikzlibrary{plotmarks,dsp,chains,calc,shapes.geometric,shapes,shadows,arrows,backgrounds,mindmap,
+decorations.pathreplacing,positioning,decorations.pathmorphing,decorations.text, decorations.mypathmorphing,decorations.markings,dsp,chains,patterns,pgfplots.groupplots,fillbetween}
          '''% locals())
                 
 # custom tikzbe settings                
@@ -292,30 +293,31 @@ class TikzMagics(Magics):
   Speaker/.pic={
     \\filldraw[fill=gray!40,pic actions] (-15pt,0) -- (15pt,0) -- ++([shift={(-6pt,8pt)}]0pt,0pt) coordinate (aux1) -- ++(-18pt,0) coordinate (aux2) -- cycle (aux1) -- ++(0,6pt) -- ++(-18pt,0) -- (aux2);
   },
-  Human/.pic={
-    \\filldraw[fill=skin] 
-      (0,0.7cm) ellipse [x radius=5pt,y radius=3pt]
-      (0,-0.7cm) ellipse [x radius=5pt,y radius=3pt];    
-    \\filldraw[fill=skin] 
-      (0.7,4pt) -- (0.7,-4pt) -- (0.95,0pt) -- cycle;    
-    \\filldraw[fill=skin] 
-      (0,0) ellipse [x radius=0.8cm, y radius=0.7cm];
-    \\filldraw[fill=brown!85!black] 
-      (0.5,0.55) arc[start angle=50,end angle=310,x radius=0.8cm, y radius=0.7cm]
-      to[out=60,in=230] cycle; 
-  },
-  Human1/.pic={
-    \\filldraw[fill=skin] 
-      (0,0.7cm) ellipse [x radius=5pt,y radius=3pt]
-      (0,-0.7cm) ellipse [x radius=5pt,y radius=3pt];    
-    \\filldraw[fill=skin] 
-      (0.7,4pt) -- (0.7,-4pt) -- (0.95,0pt) -- cycle;    
-    \\filldraw[fill=skin] 
-      (0,0) ellipse [x radius=0.8cm, y radius=0.7cm];
-    \\filldraw[fill=black!85!black] 
-      (0.5,0.55) arc[start angle=50,end angle=310,x radius=0.8cm, y radius=0.7cm]
-      to[out=60,in=230] cycle;
-  },
+  coordSpeaker/.pic={
+    \\filldraw[fill=gray!40,pic actions] 
+    (-15pt,0) -- 
+      coordinate[midway] (-front) 
+    (15pt,0) -- 
+    ++([shift={(-6pt,8pt)}]0pt,0pt) coordinate (aux1) -- 
+    ++(-18pt,0) coordinate (aux2) 
+    -- cycle 
+    (aux1) -- ++(0,6pt) -- coordinate[midway] (-back) ++(-18pt,0) -- (aux2);
+  },  
+  pics/Human/.style n args={2}{
+        code={
+            \\filldraw[fill=#1]
+              (0,0.7cm) ellipse [x radius=5pt,y radius=3pt]
+              (0,-0.7cm) ellipse [x radius=5pt,y radius=3pt];
+            \\filldraw[fill=#1]
+              (0.7,4pt) -- (0.7,-4pt) -- (0.95,0pt) -- cycle;
+            \\filldraw[fill=#1]
+              (0,0) ellipse [x radius=0.8cm, y radius=0.7cm];
+            \\filldraw[fill=#2]
+              (0.5,0.55) arc[start angle=50,end angle=310,x radius=0.8cm, y radius=0.7cm]
+              to[out=60,in=230] cycle;
+        },
+    },
+    pics/Human/.default={skin}{black},
   >=latex
 }
 

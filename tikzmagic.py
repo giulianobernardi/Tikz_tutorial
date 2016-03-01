@@ -270,18 +270,21 @@ class TikzMagics(Magics):
         tex = []
         tex.append('''
 \\documentclass[convert={%(add_params)ssize=%(width)sx%(height)s,outext=.png},border=0pt]{standalone}
-\\usepackage{tikz,amsmath,pgfplots}
+\\usepackage{tikz,amsmath,pgfplots,ifthen}
 \\definecolor{lightgrey}{RGB}{192,192,192}
 \\definecolor{gaygrey}{RGB}{5,5,5}
 \\definecolor{skin}{RGB}{248,198,135}
 \\definecolor{mygreen}{RGB}{66,213,0}
+\\definecolor{blue_kuleuven}{RGB}{17,110,138}
+\\definecolor{pbgray}{HTML}{575757}
         ''' % locals())
         
 #       if tikz_library is not None:
 #            for lib in tikz_library:
 # place custom libraries here
         tex.append('''
-\\usetikzlibrary{calc,shapes.geometric,arrows,dsp,patterns,positioning}
+\\usetikzlibrary{plotmarks,dsp,chains,calc,shapes.geometric,shapes,shadows,arrows,backgrounds,mindmap,
+decorations.pathreplacing,positioning,decorations.pathmorphing,decorations.text, decorations.mypathmorphing,decorations.markings,dsp,chains,patterns,pgfplots.groupplots,fillbetween}
          '''% locals())
                 
 # custom tikz settings                
@@ -300,30 +303,21 @@ class TikzMagics(Magics):
     -- cycle 
     (aux1) -- ++(0,6pt) -- coordinate[midway] (-back) ++(-18pt,0) -- (aux2);
   },  
-  Human/.pic={
-    \\filldraw[fill=skin] 
-      (0,0.7cm) ellipse [x radius=5pt,y radius=3pt]
-      (0,-0.7cm) ellipse [x radius=5pt,y radius=3pt];    
-    \\filldraw[fill=skin] 
-      (0.7,4pt) -- (0.7,-4pt) -- (0.95,0pt) -- cycle;    
-    \\filldraw[fill=skin] 
-      (0,0) ellipse [x radius=0.8cm, y radius=0.7cm];
-    \\filldraw[fill=brown!85!black] 
-      (0.5,0.55) arc[start angle=50,end angle=310,x radius=0.8cm, y radius=0.7cm]
-      to[out=60,in=230] cycle; 
-  },
-  Human1/.pic={
-    \\filldraw[fill=skin] 
-      (0,0.7cm) ellipse [x radius=5pt,y radius=3pt]
-      (0,-0.7cm) ellipse [x radius=5pt,y radius=3pt];    
-    \\filldraw[fill=skin] 
-      (0.7,4pt) -- (0.7,-4pt) -- (0.95,0pt) -- cycle;    
-    \\filldraw[fill=skin] 
-      (0,0) ellipse [x radius=0.8cm, y radius=0.7cm];
-    \\filldraw[fill=black!85!black] 
-      (0.5,0.55) arc[start angle=50,end angle=310,x radius=0.8cm, y radius=0.7cm]
-      to[out=60,in=230] cycle;
-  },
+  pics/Human/.style n args={2}{
+        code={
+            \\filldraw[fill=#1]
+              (0,0.7cm) ellipse [x radius=5pt,y radius=3pt]
+              (0,-0.7cm) ellipse [x radius=5pt,y radius=3pt];
+            \\filldraw[fill=#1]
+              (0.7,4pt) -- (0.7,-4pt) -- (0.95,0pt) -- cycle;
+            \\filldraw[fill=#1]
+              (0,0) ellipse [x radius=0.8cm, y radius=0.7cm];
+            \\filldraw[fill=#2]
+              (0.5,0.55) arc[start angle=50,end angle=310,x radius=0.8cm, y radius=0.7cm]
+              to[out=60,in=230] cycle;
+        },
+    },
+    pics/Human/.default={skin}{black},
   >=latex
 }
     '''% locals())
